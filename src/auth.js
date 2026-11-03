@@ -9,7 +9,6 @@ const CLIENT = {
   client_name: "CrossPoint Reader",
   client_uri: "https://github.com/crosspoint-reader/crosspoint-reader",
   software_id: "crosspoint-readeck",
-  // required by Readeck
   software_version: pkg.version,
   grant_types: [DEVICE_GRANT],
 };
