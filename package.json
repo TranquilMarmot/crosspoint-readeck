@@ -1,0 +1,32 @@
+{
+  "name": "crosspoint-readeck",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Development tooling for the Readeck CrossPoint plugin",
+  "type": "module",
+  "scripts": {
+    "build": "rollup -c",
+    "watch": "rollup -c -w",
+    "build:check": "npm run build && git diff --exit-code -- readeck.crosspoint-plugin",
+    "package": "git archive --format=zip --prefix=readeck/ -o readeck.zip HEAD:readeck.crosspoint-plugin",
+    "version": "npm run build && git add readeck.crosspoint-plugin",
+    "pretest": "npm run build",
+    "test": "node --test tests/*.test.mjs",
+    "format": "prettier --write \"**/*.{js,mjs,html}\"",
+    "format:check": "prettier --check \"**/*.{js,mjs,html}\"",
+    "prepare": "simple-git-hooks"
+  },
+  "devDependencies": {
+    "jsdom": "^30.1.3",
+    "lint-staged": "^17.6.0",
+    "prettier": "^3.9.10",
+    "rollup": "^4.67.4",
+    "simple-git-hooks": "^2.14.0"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "npx lint-staged && npm run build && git add readeck.crosspoint-plugin"
+  },
+  "lint-staged": {
+    "*.{js,mjs,html}": "prettier --write"
+  }
+}

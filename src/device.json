@@ -1,0 +1,90 @@
+{
+  "token": {
+    "file": "token.json",
+    "path": "access_token"
+  },
+  "config": {
+    "file": "config.json"
+  },
+  "browse": {
+    "url": "{cfg.server}/api/bookmarks?type=article&is_archived=false&labels=%22{list_id_enc}%22%20{cfg.exclude_labels}&offset={offset}&limit={limit}",
+    "headers": {
+      "Authorization": "Bearer {token}"
+    },
+    "fields": {
+      "title": "title",
+      "author": "site_name",
+      "id": "id"
+    },
+    "page_size": 10,
+    "lists": [
+      {
+        "title": "Unread",
+        "url": "{cfg.server}/api/bookmarks?type=article&is_archived=false&labels={cfg.exclude_labels}&offset={offset}&limit={limit}"
+      },
+      {
+        "title": "Favorites",
+        "url": "{cfg.server}/api/bookmarks?type=article&is_marked=true&labels={cfg.exclude_labels}&offset={offset}&limit={limit}"
+      },
+      {
+        "title": "Archive",
+        "url": "{cfg.server}/api/bookmarks?type=article&is_archived=true&labels={cfg.exclude_labels}&offset={offset}&limit={limit}"
+      },
+      {
+        "title": "All articles",
+        "url": "{cfg.server}/api/bookmarks?type=article&labels={cfg.exclude_labels}&offset={offset}&limit={limit}"
+      }
+    ],
+    "lists_url": "{cfg.server}/api/bookmarks/labels",
+    "lists_headers": {
+      "Authorization": "Bearer {token}"
+    },
+    "lists_items": "",
+    "lists_fields": {
+      "title": "name",
+      "id": "name"
+    },
+    "search": {
+      "url": "{cfg.server}/api/bookmarks?type=article&search={query}&labels={cfg.exclude_labels}&offset={offset}&limit={limit}"
+    }
+  },
+  "download": {
+    "url": "{cfg.server}/api/bookmarks/{id_enc}/article.epub",
+    "headers": {
+      "Authorization": "Bearer {token}"
+    },
+    "dest_dir": "/Readeck",
+    "sidecar": {
+      "path": "{dest}.meta.json",
+      "body": "{\"readeck_id\":\"{id}\"}"
+    }
+  },
+  "events": {
+    "reader.exit": {
+      "require_meta": "readeck_id",
+      "connect": true,
+      "request": {
+        "method": "PATCH",
+        "url": "{cfg.server}/api/bookmarks/{meta.readeck_id}",
+        "headers": {
+          "Authorization": "Bearer {token}",
+          "Content-Type": "application/json"
+        },
+        "body": "{\"read_progress\":{event.end_percent}}"
+      }
+    },
+    "sleep.enter": {
+      "require_meta": "readeck_id",
+      "request": {
+        "method": "PATCH",
+        "url": "{cfg.server}/api/bookmarks/{meta.readeck_id}",
+        "headers": {
+          "Authorization": "Bearer {token}",
+          "Content-Type": "application/json"
+        },
+        "body": "{\"read_progress\":{event.end_percent}}"
+      },
+      "toast": "Readeck progress synced"
+    }
+  }
+}

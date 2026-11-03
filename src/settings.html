@@ -1,0 +1,86 @@
+<h2>Readeck</h2>
+<p id="rd-status">Loading...</p>
+
+<div class="setting-row">
+  <span class="setting-name">Server URL</span>
+  <span class="setting-control">
+    <input type="text" id="rd-url" placeholder="https://readeck.example.com" />
+  </span>
+</div>
+<div class="setting-row" id="rd-signin-row">
+  <button type="button" class="btn-small btn-add" id="rd-signin">
+    Sign in
+  </button>
+  <button type="button" class="btn-small" id="rd-signout" style="display: none">
+    Sign out
+  </button>
+</div>
+<div id="rd-code" style="display: none; margin: 0.5em 0">
+  <p>Go to <a id="rd-verify" target="_blank" rel="noopener"></a></p>
+  <p>Enter the code below:</p>
+  <code
+    id="rd-usercode"
+    style="
+      display: block;
+      margin: 0.5em 0;
+      font-size: 1.6em;
+      font-weight: bold;
+      letter-spacing: 0.1em;
+      user-select: all;
+    "
+  ></code>
+</div>
+
+<details style="margin: 0.5em 0">
+  <summary>Use an API token instead</summary>
+  <div class="setting-row">
+    <span class="setting-name">API token</span>
+    <span class="setting-control">
+      <input type="password" id="rd-token" />
+    </span>
+  </div>
+  <button type="button" class="btn-small" id="rd-usetoken">Use token</button>
+  <p style="color: #666">
+    Create one in Readeck under Profile -> API Tokens with read and write access
+    to bookmarks.
+  </p>
+</details>
+
+<h3>Tags</h3>
+<div class="setting-row">
+  <span class="setting-name">Always download</span>
+  <span class="setting-control">
+    <input type="text" id="rd-auto" placeholder="ereader, longread" />
+  </span>
+</div>
+<div class="setting-row">
+  <span class="setting-name">Ignore</span>
+  <span class="setting-control">
+    <input type="text" id="rd-ignore" placeholder="video, skip" />
+  </span>
+</div>
+<div class="setting-row">
+  <label>
+    <input type="checkbox" id="rd-archive" />
+    Archive articles finished on the reader
+  </label>
+</div>
+<p style="color: #666">
+  Separate tags with commas. Articles with an Ignore tag are hidden on the
+  reader and never downloaded. Sync downloads every unarchived article with an
+  Always download tag.
+</p>
+
+<div class="setting-row">
+  <button type="button" class="btn-small btn-add" id="rd-save">Save</button>
+  <button type="button" class="btn-small" id="rd-sync">Sync now</button>
+</div>
+<pre
+  id="rd-log"
+  style="display: none; white-space: pre-wrap; max-height: 16em; overflow: auto"
+></pre>
+
+<p style="color: #666">
+  Reading progress is sent to Readeck from the reader whenever it is online.
+  Your access token and settings are stored on the SD card.
+</p>
