@@ -97,7 +97,7 @@ git push --follow-tags
 Generate the release `.zip`:
 
 ```sh
-npm run pacakge
+npm run package
 ```
 
 Create a release on GitHub:
