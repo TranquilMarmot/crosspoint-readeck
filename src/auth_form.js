@@ -1,13 +1,7 @@
-// Sign in, Sign out, and Use token buttons on the settings page.
+// Sign in and Sign out buttons on the settings page.
 import { el, status } from "./dom.js";
 import { profileName } from "./readeck.js";
-import {
-  storeToken,
-  startDeviceFlow,
-  pollForToken,
-  checkToken,
-  signOut,
-} from "./auth.js";
+import { storeToken, startDeviceFlow, pollForToken, signOut } from "./auth.js";
 
 /**
  * Display status of being signed in to Readeck
@@ -84,30 +78,5 @@ export function bindAuthForm(ctx, saveConfig) {
 
     await signOut(ctx);
     showSignedIn(ctx, "");
-  };
-
-  // use token button
-  el("rd-usetoken").onclick = async () => {
-    try {
-      const cfg = await saveConfig();
-
-      if (!cfg.server) {
-        throw new Error("enter your Readeck server URL first");
-      }
-
-      const t = el("rd-token").value.trim();
-      if (!t) {
-        throw new Error("paste a token first");
-      }
-
-      const name = await checkToken(ctx, t);
-
-      await storeToken(ctx, t);
-
-      el("rd-token").value = "";
-      showSignedIn(ctx, name);
-    } catch (e) {
-      status("Error: " + e.message);
-    }
   };
 }

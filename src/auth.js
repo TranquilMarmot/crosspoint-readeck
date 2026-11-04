@@ -1,7 +1,7 @@
 // Readeck authentication.
-// OAuth device flow, API tokens, and token storage.
+// OAuth device flow and token storage.
 import { writeJson } from "./storage.js";
-import { call, profileName } from "./readeck.js";
+import { call } from "./readeck.js";
 import pkg from "../package.json" with { type: "json" };
 
 const DEVICE_GRANT = "urn:ietf:params:oauth:grant-type:device_code";
@@ -40,7 +40,7 @@ export async function startDeviceFlow(ctx) {
   const features = (info.data && info.data.features) || [];
   if (!features.includes("oauth")) {
     throw new Error(
-      "this Readeck server has no OAuth sign-in. Use an API token instead.",
+      "this Readeck server has no OAuth sign-in. Update Readeck to sign in.",
     );
   }
 
@@ -121,29 +121,6 @@ export async function pollForToken(ctx, flow, isCancelled) {
   }
 
   return "";
-}
-
-/**
- * Check that Readeck accepts an API token.
- *
- * @param {import("./storage.js").Context} ctx
- * @param {string} t
- * @returns {Promise<string>} the user name, or "" if unknown
- */
-export async function checkToken(ctx, t) {
-  const name = await profileName(ctx, t);
-  const check = await call(ctx, "GET", "/bookmarks?limit=1", undefined, {
-    token: t,
-    allowError: true,
-  });
-
-  if (check.status !== 200) {
-    throw new Error(
-      "Readeck did not accept this token (HTTP " + check.status + ")",
-    );
-  }
-
-  return name;
 }
 
 /**

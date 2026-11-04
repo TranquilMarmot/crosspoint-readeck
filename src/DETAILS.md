@@ -22,8 +22,6 @@ Browse and download articles from Readeck (readeck.org) as EPUB to read offline.
 - You will see a link to /device on your Readeck instance as well as a code
 - Enter the code in Readeck and then select "Authorize"
 
-You can also create an API token in Readeck, expand "Use an API token instead", and paste it in. Older versions of Readeck without OAuth need an API token.
-
 ## Browsing articles
 
 - From the home screen, choose Plugins -> Readeck and pick a list or tag

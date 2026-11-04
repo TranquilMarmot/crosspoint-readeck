@@ -46,8 +46,6 @@ Highlights are sent when syncing from the plugin settings.
 - You will see a link to `/device` on your Readeck instance as well as a code
 - Paste the code into Readeck and then select "Authorize"
 
-You can also authenticate by creating an API token in Readeck, expanding "Use an API token instead", and paste it in. Older versions of Readeck may not support OAuth and so will require an API token.
-
 ## Downloading articles from Readeck
 
 ### Browsing for articles

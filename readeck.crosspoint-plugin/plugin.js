@@ -410,21 +410,6 @@
   ></code>
 </div>
 
-<details style="margin: 0.5em 0">
-  <summary>Use an API token instead</summary>
-  <div class="setting-row">
-    <span class="setting-name">API token</span>
-    <span class="setting-control">
-      <input type="password" id="rd-token" />
-    </span>
-  </div>
-  <button type="button" class="btn-small" id="rd-usetoken">Use token</button>
-  <p style="color: #666">
-    Create one in Readeck under Profile -> API Tokens with read and write access
-    to bookmarks.
-  </p>
-</details>
-
 <h3>Tags</h3>
 <div class="setting-row">
   <span class="setting-name">Always download</span>
@@ -742,7 +727,7 @@
   var pkg = {"version":"0.1.0"};
 
   // Readeck authentication.
-  // OAuth device flow, API tokens, and token storage.
+  // OAuth device flow and token storage.
 
   const DEVICE_GRANT = "urn:ietf:params:oauth:grant-type:device_code";
   const CLIENT = {
@@ -780,7 +765,7 @@
     const features = (info.data && info.data.features) || [];
     if (!features.includes("oauth")) {
       throw new Error(
-        "this Readeck server has no OAuth sign-in. Use an API token instead.",
+        "this Readeck server has no OAuth sign-in. Update Readeck to sign in.",
       );
     }
 
@@ -864,29 +849,6 @@
   }
 
   /**
-   * Check that Readeck accepts an API token.
-   *
-   * @param {import("./storage.js").Context} ctx
-   * @param {string} t
-   * @returns {Promise<string>} the user name, or "" if unknown
-   */
-  async function checkToken(ctx, t) {
-    const name = await profileName(ctx, t);
-    const check = await call(ctx, "GET", "/bookmarks?limit=1", undefined, {
-      token: t,
-      allowError: true,
-    });
-
-    if (check.status !== 200) {
-      throw new Error(
-        "Readeck did not accept this token (HTTP " + check.status + ")",
-      );
-    }
-
-    return name;
-  }
-
-  /**
    * Revoke the token in Readeck, if possible, and forget it locally.
    *
    * @param {import("./storage.js").Context} ctx
@@ -910,7 +872,7 @@
     await storeToken(ctx, "");
   }
 
-  // Sign in, Sign out, and Use token buttons on the settings page.
+  // Sign in and Sign out buttons on the settings page.
 
   /**
    * Display status of being signed in to Readeck
@@ -987,31 +949,6 @@
 
       await signOut(ctx);
       showSignedIn(ctx, "");
-    };
-
-    // use token button
-    el("rd-usetoken").onclick = async () => {
-      try {
-        const cfg = await saveConfig();
-
-        if (!cfg.server) {
-          throw new Error("enter your Readeck server URL first");
-        }
-
-        const t = el("rd-token").value.trim();
-        if (!t) {
-          throw new Error("paste a token first");
-        }
-
-        const name = await checkToken(ctx, t);
-
-        await storeToken(ctx, t);
-
-        el("rd-token").value = "";
-        showSignedIn(ctx, name);
-      } catch (e) {
-        status("Error: " + e.message);
-      }
     };
   }
 

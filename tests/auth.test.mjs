@@ -159,18 +159,6 @@ test("pollForToken stops quietly when cancelled", async (t) => {
   assert.equal(replies.times.length, 1);
 });
 
-test("checkToken returns the user name, or rejects a refused token", async () => {
-  const ok = (req) => req.headers.Authorization === "Bearer good";
-  const { ctx } = await setup({
-    "GET /profile": (req) =>
-      ok(req) ? { data: { user: { username: "nate" } } } : { status: 401 },
-    "GET /bookmarks": (req) => (ok(req) ? { data: [] } : { status: 403 }),
-  });
-
-  assert.equal(await Auth.checkToken(ctx, "good"), "nate");
-  await assert.rejects(Auth.checkToken(ctx, "bad"), /HTTP 403/);
-});
-
 test("storeToken writes the token, and an empty token clears it", async () => {
   const { dev, ctx } = await setup({});
 
