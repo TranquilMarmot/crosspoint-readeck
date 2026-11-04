@@ -78,7 +78,7 @@ This plugin is built using [rollup](https://rollupjs.org/). `node` is required t
 
 Plugin code is located in `src/`
 
-## Releasing
+### Releasing
 
 Bump the version in `package.json`:
 
@@ -86,22 +86,16 @@ Bump the version in `package.json`:
 npm version patch
 ```
 
-This version is used in the built plugin. Running this will also re-build the plugin folder.
-
-Push the new tag:
+Then, run:
 
 ```sh
-git push --follow-tags
+npm run release
 ```
 
-Generate the release `.zip`:
+This will:
 
-```sh
-npm run package
-```
+- Push the new tag
+- Generate the release `.zip`
+- Create a release on GitHub
 
-Create a release on GitHub:
-
-```sh
-gh release create v0.1.1 readeck.zip --title "0.1.1" --generate-notes
-```
+CrossPoint's Plugin Hub periodically scans GitHub for updates to published plugins. Within ~4 hours, it should be updated automatically.
