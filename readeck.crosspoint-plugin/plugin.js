@@ -724,7 +724,7 @@
     return result;
   }
 
-  var pkg = {"version":"0.1.0"};
+  var pkg = {"version":"0.1.1"};
 
   // Readeck authentication.
   // OAuth device flow and token storage.

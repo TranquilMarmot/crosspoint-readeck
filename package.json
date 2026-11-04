@@ -1,7 +1,7 @@
 {
   "name": "crosspoint-readeck",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "MIT",
   "description": "Development tooling for the Readeck CrossPoint plugin",
   "type": "module",
